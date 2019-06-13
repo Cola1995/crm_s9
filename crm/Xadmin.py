@@ -3,6 +3,7 @@ from Xadmin.service.Xadmin import site,ModelXadmin
 from  django.shortcuts import render, redirect, HttpResponse
 from django.conf.urls import url
 from django.utils.safestring import mark_safe
+from django.http import JsonResponse
 
 class Userinfo(ModelXadmin):
     list_display = ['name','username','email','depart']
@@ -149,11 +150,13 @@ class CourseRecordConfig(ModelXadmin):
 
 
 site.register(CourseRecord,CourseRecordConfig)
+
 class StudyRecordConfig(ModelXadmin):
     def get_record_display(self,obj=None,is_header= False):
         if is_header:
             return "上课记录"
         return obj.get_record_display()
+
     def get_score_display(self,obj=None,is_header= False):
         if is_header:
             return "成绩"
@@ -168,9 +171,6 @@ class StudyRecordConfig(ModelXadmin):
     path_checked.short_description = "签到"
 
 
-
-
-
     actions = [path_late,path_checked]
     list_display = ['student','course_record','record','score']
 
@@ -181,5 +181,42 @@ site.register(StudyRecord,StudyRecordConfig)
 
 
 class StudentConfig(ModelXadmin):
-    list_display = ["username","class_list"]
+    def score_show(self, obj= None, is_header = False):
+        if is_header:
+            return "查看成绩"
+        else:
+            return mark_safe("<a href='show_score/%s'>查看</a>"%(obj.pk))
+
+    def score_show_view(self, request, student_id):
+        """
+        查看成绩
+        :param request:
+        :param student_id:
+        :return:
+        """
+        if request.is_ajax():   # 判断是否是ajax提交
+            print('收到ajax请求')
+            c_id = request.GET.get("c_id")
+            s_id = request.GET.get("s_id")
+            # print("course_id",c_id,"s_id",s_id)
+            data = []
+            # 查询每一天的学习记录
+            records = StudyRecord.objects.filter(student= s_id,course_record__class_obj=c_id)      #[["day94",90]]
+            # print(records.first().course_record.day_num)
+            # 构建hichart需要的数据结构
+            for record in records:
+                data.append(["day%s"%record.course_record.day_num,record.score])
+            # print(data)
+            return JsonResponse(data, safe=False)
+        else:
+            student = Student.objects.filter(pk = student_id).first()
+            class_list =student.class_list.all()
+            return render(request, "show_score.html", locals())
+
+    def extra_url(self):
+        temp = []
+        temp.append(url(r"show_score/(\d+)", self.score_show_view))  # 添加路由
+        return temp
+
+    list_display = ["username","class_list", score_show]
 site.register(Student,StudentConfig)
