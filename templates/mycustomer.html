@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+<h3>我的客户页面</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>客户姓名</th>
+
+                    <th>课程顾问</th>
+                    <th>订单状态</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for customer in mycustomer %}
+                    <tr>
+                    <td>{{ customer.customer.name }}</td>
+
+                    <td>{{ customer.consultant }}</td>
+
+                    <td>{{ customer.get_status_display }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

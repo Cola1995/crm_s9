@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+<h3>公共客户页面</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>客户姓名</th>
+                    <th>性别</th>
+                    <th>课程顾问</th>
+                    <th>接单时间</th>
+                    <th>最后跟进时间</th>
+                    <th>跟进内容</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for customer in customers %}
+                    <tr>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.get_gender_display }}</td>
+                    <td>{{ customer.consultant }}</td>
+                    <td>{{ customer.recv_date|date:"Y-m-d" }}</td>
+                    <td>{{ customer.last_consult_date|date:"Y-m-d" }}</td>
+                    <td><a href="">查看跟进记录</a></td>
+                    <td><a href="futher/{{ customer.pk }}">抢单</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
