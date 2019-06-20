@@ -20,7 +20,7 @@ class ShowList(object):
         current_page = int(self.request.GET.get("page", 1))
         base_path = self.request.path
         # 调用分页器方法
-        self.pagination = Page(current_page, data_count, base_path, self.request.GET, per_page_num=5,
+        self.pagination = Page(current_page, data_count, base_path, self.request.GET, per_page_num=10,
                                pager_count=11, )
         self.page_data = self.data_list[self.pagination.start:self.pagination.end]
 

@@ -4,6 +4,7 @@ from  django.shortcuts import render, redirect, HttpResponse
 from django.conf.urls import url
 from django.utils.safestring import mark_safe
 from django.http import JsonResponse
+from datetime import *
 
 class Userinfo(ModelXadmin):
     list_display = ['name','username','email','depart']
@@ -60,6 +61,43 @@ class Customerconfig(ModelXadmin):
         obj.course.remove(course_id)
         return redirect(self.get_list_url())
 
+
+    def public_view(self,request):
+        """
+        公共也页面视图
+        公共客户标准：3天为跟进或15天未成单且未报名的客户
+        :param request:
+        :return:
+        """
+
+        time_3 = datetime.now() - timedelta(days=3)
+        time_15 = datetime.now() - timedelta(days=15)
+        from django.db.models import Q
+        customers = Customer.objects.filter(Q(last_consult_date__lt=time_3) | Q(recv_date__lt=time_15), status=2)
+        return render(request, "public_customer.html",locals())
+
+    def futher(self, request,customer_id):
+
+        user_id = 6  # 我是销售
+        print(customer_id)
+        now = datetime.now()
+
+        time_3 = datetime.now() - timedelta(days=3)
+        time_15 = datetime.now() - timedelta(days=15)
+        from django.db.models import Q
+        ret = Customer.objects.filter(pk=customer_id).filter(Q(last_consult_date__lt=time_3) | Q(recv_date__lt=time_15), status=2).update(recv_date=now,last_consult_date=now, consultant=user_id)
+        if not ret:
+            return HttpResponse("已经被跟进了")
+        else:
+            CustomerDistrbute.objects.create(customer_id=customer_id, consultant_id=user_id, date=now, status=1)
+            return HttpResponse("跟进成功")
+
+    def mycustomer(self,request):
+        user_id = 6
+        mycustomer = CustomerDistrbute.objects.filter(consultant=user_id)
+        return render(request,"mycustomer.html",locals())
+
+
     def extra_url(self):
         """
         扩展url 类
@@ -67,6 +105,10 @@ class Customerconfig(ModelXadmin):
         """
         temp = []
         temp.append(url(r"cancel_course/(\d+)/(\d+)", self.cancel_course))    # 添加路由
+        temp.append(url(r"public/$", self.public_view))    # 添加公共客户路由
+        temp.append(url(r"futher/(\d+)", self.futher))    # 添加公共客户路由
+        temp.append(url(r"mycustomer/", self.mycustomer))    # 添加公共客户路由
+
         return temp
 
     list_display = ["name", display_gender,display_course,"consultant"]
@@ -74,7 +116,11 @@ class Customerconfig(ModelXadmin):
 site.register(Customer, Customerconfig)
 site.register(Department)
 site.register(Course)
-site.register(ConsultRecord)
+
+class ConsultRecordConfig(ModelXadmin):
+    list_display = ['customer','consultant','note','date']
+
+site.register(ConsultRecord,ConsultRecordConfig)
 class CourseRecordConfig(ModelXadmin):
 
 
@@ -195,7 +241,7 @@ class StudentConfig(ModelXadmin):
         :return:
         """
         if request.is_ajax():   # 判断是否是ajax提交
-            print('收到ajax请求')
+            # print('收到ajax请求')
             c_id = request.GET.get("c_id")
             s_id = request.GET.get("s_id")
             # print("course_id",c_id,"s_id",s_id)
@@ -220,3 +266,4 @@ class StudentConfig(ModelXadmin):
 
     list_display = ["username","class_list", score_show]
 site.register(Student,StudentConfig)
+site.register(CustomerDistrbute)
