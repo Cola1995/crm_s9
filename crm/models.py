@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-
+from rbac.models import User
 from django.db import models
 
 class Department(models.Model):
@@ -30,6 +30,8 @@ class UserInfo(models.Model):
     email = models.EmailField(verbose_name='邮箱', max_length=64)
 
     depart = models.ForeignKey(verbose_name='部门', to="Department", to_field="code")
+    user = models.OneToOneField(to=User,null=True)   #与rbac user表做一对一关联
+
 
     def __str__(self):
         return self.name
