@@ -10,5 +10,7 @@ def login(request):
         user = User.objects.filter(name=username,pwd=pwd).first()
         initial_session(user,request)
         request.session['user_id'] = user.pk
+        request.session['user'] = user.name
+
         return render(request,"rbac/users.html",locals())
     return render(request,"login.html",locals())
