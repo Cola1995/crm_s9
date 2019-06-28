@@ -8,7 +8,7 @@ register=template.Library()
 
 
 
-@register.inclusion_tag("rbac/menu.html")
+@register.inclusion_tag("rbac/menu1.html")
 def get_menu(request,):
     # 获取当前用户可以放到菜单栏中的权限
     menu_permission_list = request.session["menu_permission_list"]

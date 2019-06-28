@@ -47,7 +47,7 @@ def initial_session(user,request):
         if item["permissions__action"]=="list":
             menu_permission_list.append((item["permissions__url"],item["permissions__group__title"]))
 
-    print(menu_permission_list)
+    print("menu_permission_list",menu_permission_list)
     request.session["menu_permission_list"]=menu_permission_list
 
 

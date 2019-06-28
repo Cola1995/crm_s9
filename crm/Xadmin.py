@@ -111,7 +111,7 @@ class Customerconfig(ModelXadmin):
 
         return temp
 
-    list_display = ["name", display_gender,display_course,"consultant"]
+    list_display = ["name", display_gender,display_course,"consultant","education"]
 
 site.register(Customer, Customerconfig)
 site.register(Department)

@@ -12,5 +12,9 @@ def login(request):
         request.session['user_id'] = user.pk
         request.session['user'] = user.name
 
-        return render(request,"rbac/users.html",locals())
+        return render(request,"rbac/base1.html",locals())
     return render(request,"login.html",locals())
+
+def test(request):
+
+    return render(request,"admin.html")
