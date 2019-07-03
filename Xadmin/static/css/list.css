@@ -6,3 +6,9 @@
         .active{
             color: rebeccapurple!important;
         }
+
+        .input_td{
+            width: 30px;
+            height: 30px;
+
+        }

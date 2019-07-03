@@ -25,7 +25,7 @@ class ValidPermission(MiddlewareMixin):
         current_path = request.path_info
 
         # 检查是否属于白名单
-        valid_url_list=["/login/","/reg/","/admin/.*","/test/"]
+        valid_url_list=["/login/","/reg/","/admin/.*","/test/","/index/"]
 
         for valid_url in valid_url_list:
             ret=re.match(valid_url,current_path)

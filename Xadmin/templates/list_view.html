@@ -3,10 +3,10 @@
 
 
     <h3>查看{{ model_name }}数据</h3>
-    <div class="container">
+    <div class="">
         <div class="row">
 
-            <div class="col-md-9">
+            <div class="col-md-11">
                 <div>
                     <a href="{{ add_url }}" class="btn btn-primary">添加数据</a>
                     {% if showlist.config.search_fields %}
@@ -31,7 +31,11 @@
                         <thead>
                         <tr>
                             {% for foo in showlist.get_header %}
+                                {% if forloop.first %}
+                                <td class = "input_td">{{ foo }}</td>
+                                {% else %}
                                 <td>{{ foo }}</td>
+                                {% endif %}
                             {% endfor %}
 
                         </tr>
@@ -40,7 +44,12 @@
                         {% for data in showlist.get_data_list %}
                             <tr>
                                 {% for foo in data %}
-                                    <td>{{ foo }}</td>
+                                    {% if forloop.first %}
+                                        <td class="input_td">{{ foo }}</td>
+                                    {% else %}
+                                        <td>{{ foo }}</td>
+                                    {% endif %}
+                                    
                                 {% endfor %}
                             </tr>
                         {% endfor %}

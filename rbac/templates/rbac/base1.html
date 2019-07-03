@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/add.css">
     <link rel="stylesheet" href="/stati/css/list.css">
-
+    <script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
+    <script src="http://cdn.highcharts.com.cn/highcharts/themes/dark-unica.js"></script>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -34,7 +35,7 @@
       <li class="layui-nav-item">
         <a href="javascript:;">
           <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-          贤心
+          {{ user }}
         </a>
         <dl class="layui-nav-child">
           <dd><a href="">基本资料</a></dd>
@@ -77,10 +78,18 @@
         </div>
   <div class="layui-body">
     <!-- 内容主体区域 -->
-    <div style="padding: 15px;">内容主体区域
+    <div style="padding: 15px;">
+    <blockquote class="layui-elem-quote">
+  帮助有志向的年轻人通过努力学习获得体面的工作和生活！
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;——老男孩IT教育集团
+</blockquote>
+
+
+{#        折线图#}
+<div id="container" style="min-width:800px;height:700px"></div>
+
+
     {% block con %}
-
-
 
         {% endblock %}
 
@@ -92,6 +101,7 @@
     © layui.com - 底部固定区域
   </div>
 </div>
+<script src="/static/jquery-3.3.1.js"></script>
 <script src="/static/src/layui.js"></script>
 <script>
 //JavaScript代码区域
@@ -99,6 +109,47 @@ layui.use('element', function(){
   var element = layui.element;
 
 });
+
+//折线图
+   var chart = Highcharts.chart('container', {
+	chart: {
+		type: 'line'
+	},
+	title: {
+		text: '月客户增长情况'
+	},
+	subtitle: {
+		text: '数据来源: WorldClimate.com'
+	},
+	xAxis: {
+		categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+	},
+	yAxis: {
+		title: {
+			text: '数量 (个)'
+		}
+	},
+	plotOptions: {
+		line: {
+			dataLabels: {
+				// 开启数据标签
+				enabled: true
+			},
+			// 关闭鼠标跟踪，对应的提示框、点击事件会失效
+			enableMouseTracking: false
+		}
+	},
+	series: [{
+		name: 'Python班级',
+		data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+	}, {
+		name: 'Linux班级',
+		data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+	}]
+});
+
+
+
 </script>
 </body>
 </html>

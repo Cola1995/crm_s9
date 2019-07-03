@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^Xadmin/', site.urls),
     url(r'^login/', views.login),
     url(r'^test/', views.test),
+    url(r'^index/', views.index),
 ]
