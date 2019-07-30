@@ -233,6 +233,13 @@ class StudentConfig(ModelXadmin):
         else:
             return mark_safe("<a href='show_score/%s'>查看</a>"%(obj.pk))
 
+    def show_createtime(self,obj= None, is_header = False):
+        if is_header:
+            return "创建时间"
+        else:
+            return obj.create_time.strftime('%Y-%m-%d')
+            # return time.strftime('%%Y-%%m-%%d',obj.create_time)
+
     def score_show_view(self, request, student_id):
         """
         查看成绩
@@ -264,6 +271,7 @@ class StudentConfig(ModelXadmin):
         temp.append(url(r"show_score/(\d+)", self.score_show_view))  # 添加路由
         return temp
 
-    list_display = ["username","class_list", score_show]
+    list_display = ["username","class_list", score_show,show_createtime]
+
 site.register(Student,StudentConfig)
 site.register(CustomerDistrbute)

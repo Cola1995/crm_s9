@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'rbac.service.rbac.ValidPermission'
+    # 'rbac.service.rbac.ValidPermission'       # 权限中间件
 ]
 
 ROOT_URLCONF = 'crm_s9.urls'
@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
-
+# TIME_ZONE = "Asia/Shanghai"
 USE_I18N = True
 
 USE_L10N = True

@@ -9,7 +9,7 @@
  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/add.css">
-    <link rel="stylesheet" href="/stati/css/list.css">
+    <link rel="stylesheet" href="/static/css/list.css">
     <script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
     <script src="http://cdn.highcharts.com.cn/highcharts/themes/dark-unica.js"></script>
 </head>
@@ -42,7 +42,7 @@
           <dd><a href="">安全设置</a></dd>
         </dl>
       </li>
-      <li class="layui-nav-item"><a href="">退了</a></li>
+      <li class="layui-nav-item"><a href="/logout/">退了</a></li>
     </ul>
   </div>
   
@@ -110,7 +110,16 @@ layui.use('element', function(){
 
 });
 
-//折线图
+//加载函数,ajax请求index页面需要的数据
+$(document).ready(function () {
+{#alert(typeof {{ a_list }})#}
+    $.ajax({
+        "url":"/show_data/",
+        "type":"get",
+        success:function (arg) {
+            {#alert(arg)#}
+
+            //折线图
    var chart = Highcharts.chart('container', {
 	chart: {
 		type: 'line'
@@ -139,15 +148,22 @@ layui.use('element', function(){
 			enableMouseTracking: false
 		}
 	},
-	series: [{
-		name: 'Python班级',
-		data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-	}, {
-		name: 'Linux班级',
-		data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-	}]
+
+	series: arg
 });
 
+
+
+        }
+
+    });
+
+
+
+
+
+
+})
 
 
 </script>

@@ -63,6 +63,8 @@ class School(models.Model):
 
     """
     title = models.CharField(verbose_name='校区名称', max_length=32)
+    # test = models.CharField(verbose_name='测试',max_length=32,null=True)
+    # graduate_date = models.DateField(verbose_name="结业日期", null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -215,6 +217,7 @@ class Student(models.Model):
     welfare = models.CharField(verbose_name='福利', max_length=256, blank=True, null=True)
     date = models.DateField(verbose_name='入职时间', help_text='格式yyyy-mm-dd', blank=True, null=True)
     memo = models.CharField(verbose_name='备注', max_length=256, blank=True, null=True)
+    create_time = models.DateField(null=True,verbose_name='创建时间',blank=True)
 
     def __str__(self):
         return self.username
